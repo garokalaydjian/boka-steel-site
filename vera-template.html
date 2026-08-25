@@ -367,6 +367,16 @@
   .piece-row .piece-name{ font-family:var(--font-mono); font-size:.76rem; color:var(--muted); }
   .piece-row .swatch{ width:26px; height:26px; }
 
+  .ral-section{ padding:56px 32px; }
+  .ral-group{ margin-top:28px; }
+  .ral-group h4{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--brass); margin:0 0 14px; }
+  .ral-chip-row{ display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:12px; }
+  .ral-chip{ display:flex; align-items:center; gap:10px; background:var(--surface); border:var(--edge); border-radius:6px; padding:8px; }
+  .ral-chip-swatch{ width:32px; height:32px; border-radius:4px; flex:none; box-shadow:inset 0 0 0 1px rgba(0,0,0,.1); }
+  .ral-chip-label{ font-family:var(--font-mono); font-size:.7rem; line-height:1.4; color:var(--ink); }
+  .ral-chip-label em{ font-style:normal; color:var(--muted); font-size:.9em; }
+  @media (max-width:640px){ .ral-chip-row{ grid-template-columns:repeat(auto-fill, minmax(100px, 1fr)); } }
+
   #preview-panel{ display:flex; flex-direction:column; padding:0; }
   .preview-toolbar{ padding:18px 24px; border-bottom:var(--edge); display:flex; align-items:center; justify-content:space-between; }
   /* Deliberately a darker "spotlit studio stage" for the 3D preview — a
@@ -609,6 +619,12 @@
             <p class="step-copy" data-copy="services.powdercoating.process.step4"></p>
           </div>
         </div>
+      </div>
+      <div class="wrap ral-section">
+        <span class="eyebrow">Color Options</span>
+        <h2 style="font-size:2rem;margin-top:8px;">RAL Colour Catalogue</h2>
+        <p class="lede">Every color below is matched to our physical color chart — pick a code, and your piece is finished to that exact shade.</p>
+        <div id="ral-catalogue-grid"><!-- populated by JS from RAL_CATALOGUE --></div>
       </div>
       <div class="wrap service-cta">
         <p>Have a piece you'd like finished?</p>
@@ -922,17 +938,8 @@
 
             <div class="control-group" id="frame-color-group">
               <h4>Frame / Body Color</h4>
-              <div class="swatch-row" id="frame-color-swatches">
-                <button class="swatch is-selected" id="frame-color-9005" data-ral="9005" style="background:#0a0a0a;" title="RAL 9005 Jet Black" aria-label="RAL 9005 Jet Black"></button>
-                <button class="swatch" id="frame-color-9010" data-ral="9010" style="background:#f2f1ec;" title="RAL 9010 Pure White" aria-label="RAL 9010 Pure White"></button>
-                <button class="swatch" id="frame-color-7016" data-ral="7016" style="background:#383e42;" title="RAL 7016 Anthracite Grey" aria-label="RAL 7016 Anthracite Grey"></button>
-                <button class="swatch" id="frame-color-8017" data-ral="8017" style="background:#442f29;" title="RAL 8017 Chocolate Brown" aria-label="RAL 8017 Chocolate Brown"></button>
-                <button class="swatch" id="frame-color-3020" data-ral="3020" style="background:#c1121c;" title="RAL 3020 Traffic Red" aria-label="RAL 3020 Traffic Red"></button>
-                <button class="swatch" id="frame-color-6005" data-ral="6005" style="background:#0f4c3a;" title="RAL 6005 Moss Green" aria-label="RAL 6005 Moss Green"></button>
-                <button class="swatch" id="frame-color-gold" data-ral="gold" style="background:#c9a227;" title="Brushed Gold" aria-label="Brushed Gold"></button>
-                <button class="swatch" id="frame-color-bronze" data-ral="bronze" style="background:#7c5a35;" title="Bronze" aria-label="Bronze"></button>
-              </div>
-              <p class="palette-note">Starter RAL palette — full chart available on request.</p>
+              <div class="swatch-row" id="frame-color-swatches"><!-- populated by JS from RAL_CATALOGUE --></div>
+              <p class="palette-note">Full RAL catalogue — exact match to our physical color chart.</p>
             </div>
 
             <div class="control-group" id="top-material-group">
@@ -952,34 +959,7 @@
             <!-- Wall Art special case: per-piece color pickers -->
             <div class="control-group wallart-only" id="piece-color-panel">
               <h4>Piece Colors</h4>
-              <div id="piece-color-list">
-                <div class="piece-row" data-piece-id="1">
-                  <span class="piece-name">Piece 1</span>
-                  <div class="swatch-row">
-                    <button class="swatch is-selected" data-ral="9005" style="background:#0a0a0a;" aria-label="RAL 9005 Jet Black"></button>
-                    <button class="swatch" data-ral="gold" style="background:#c9a227;" aria-label="Brushed Gold"></button>
-                    <button class="swatch" data-ral="7016" style="background:#383e42;" aria-label="RAL 7016 Anthracite Grey"></button>
-                  </div>
-                </div>
-                <div class="piece-row" data-piece-id="2">
-                  <span class="piece-name">Piece 2</span>
-                  <div class="swatch-row">
-                    <button class="swatch" data-ral="9005" style="background:#0a0a0a;" aria-label="RAL 9005 Jet Black"></button>
-                    <button class="swatch is-selected" data-ral="gold" style="background:#c9a227;" aria-label="Brushed Gold"></button>
-                    <button class="swatch" data-ral="7016" style="background:#383e42;" aria-label="RAL 7016 Anthracite Grey"></button>
-                  </div>
-                </div>
-              </div>
-              <template id="piece-row-template">
-                <div class="piece-row" data-piece-id="">
-                  <span class="piece-name"></span>
-                  <div class="swatch-row">
-                    <button class="swatch" data-ral="9005" style="background:#0a0a0a;" aria-label="RAL 9005 Jet Black"></button>
-                    <button class="swatch" data-ral="gold" style="background:#c9a227;" aria-label="Brushed Gold"></button>
-                    <button class="swatch" data-ral="7016" style="background:#383e42;" aria-label="RAL 7016 Anthracite Grey"></button>
-                  </div>
-                </div>
-              </template>
+              <div id="piece-color-list"><!-- populated by JS from RAL_CATALOGUE --></div>
             </div>
           </div>
 
@@ -1285,8 +1265,45 @@
        CONFIGURATOR ENGINE — live parametric preview
        ============================================================ */
 
-    var RAL_HEX = { '9005':'#0a0a0a', '9010':'#f2f1ec', '7016':'#383e42', '8017':'#442f29', '3020':'#c1121c', '6005':'#0f4c3a', 'gold':'#c9a227', 'bronze':'#7c5a35' };
-    var RAL_NAME = { '9005':'Jet Black', '9010':'Pure White', '7016':'Anthracite Grey', '8017':'Chocolate Brown', '3020':'Traffic Red', '6005':'Moss Green', 'gold':'Brushed Gold', 'bronze':'Bronze' };
+    var RAL_CATALOGUE = [
+      { id:'9005', name:'Jet Black',        hex:'#0a0a0a', group:'Blacks & Whites' },
+      { id:'9004', name:'Signal Black',     hex:'#17181a', group:'Blacks & Whites' },
+      { id:'9010', name:'Pure White',       hex:'#f2f1ec', group:'Blacks & Whites' },
+      { id:'7016', name:'Anthracite Grey',  hex:'#383e42', group:'Greys' },
+      { id:'7024', name:'Graphite Grey',    hex:'#474a51', group:'Greys' },
+      { id:'7037', name:'Dusty Grey',       hex:'#7d7f7d', group:'Greys' },
+      { id:'7035', name:'Light Grey',       hex:'#d7d7d7', group:'Greys' },
+      { id:'1019', name:'Grey Beige',       hex:'#a49887', group:'Beige & Yellow' },
+      { id:'1020', name:'Olive Yellow',     hex:'#9c8b26', group:'Beige & Yellow' },
+      { id:'1021', name:'Colza Yellow',     hex:'#f2ab00', group:'Beige & Yellow' },
+      { id:'2004', name:'Pure Orange',      hex:'#e35213', group:'Orange' },
+      { id:'2011', name:'Deep Orange',      hex:'#d4652f', group:'Orange' },
+      { id:'3020', name:'Traffic Red',      hex:'#c1121c', group:'Reds & Browns' },
+      { id:'3003', name:'Ruby Red',         hex:'#8d1d2c', group:'Reds & Browns' },
+      { id:'3005', name:'Wine Red',         hex:'#591f2a', group:'Reds & Browns' },
+      { id:'3009', name:'Oxide Red',        hex:'#6d342d', group:'Reds & Browns' },
+      { id:'8012', name:'Red Brown',        hex:'#6a3025', group:'Reds & Browns' },
+      { id:'8017', name:'Chocolate Brown',  hex:'#442f29', group:'Reds & Browns' },
+      { id:'4005', name:'Blue Lilac',       hex:'#6c4675', group:'Pinks & Purples' },
+      { id:'4010', name:'Telemagenta',      hex:'#b6266e', group:'Pinks & Purples' },
+      { id:'3015', name:'Light Pink',       hex:'#d8a0a6', group:'Pinks & Purples' },
+      { id:'5013', name:'Cobalt Blue',      hex:'#232c55', group:'Blues' },
+      { id:'5002', name:'Ultramarine Blue', hex:'#1f2a5a', group:'Blues' },
+      { id:'5021', name:'Water Blue',       hex:'#017a8b', group:'Blues' },
+      { id:'5018', name:'Turquoise Blue',   hex:'#00a0a6', group:'Blues' },
+      { id:'6001', name:'Emerald Green',    hex:'#1f7a4d', group:'Greens' },
+      { id:'6009', name:'Fir Green',        hex:'#1f3d2b', group:'Greens' },
+      { id:'6011', name:'Reseda Green',     hex:'#6c7c59', group:'Greens' },
+      { id:'6013', name:'Reed Green',       hex:'#6a6b3f', group:'Greens' },
+      { id:'6005', name:'Moss Green',       hex:'#0f4c3a', group:'Greens' },
+      { id:'gold',   name:'Brushed Gold',   hex:'#c9a227', group:'Metallics' },
+      { id:'bronze', name:'Bronze',         hex:'#7c5a35', group:'Metallics' }
+    ];
+    var RAL_HEX = {}, RAL_NAME = {};
+    RAL_CATALOGUE.forEach(function(c){ RAL_HEX[c.id] = c.hex; RAL_NAME[c.id] = 'RAL ' + c.id + ' ' + c.name; });
+    RAL_NAME.gold = 'Brushed Gold'; RAL_NAME.bronze = 'Bronze';
+    renderFrameSwatches();
+    renderRalCatalogueDisplay();
     var MATERIAL_NAME = { steel:'Steel', wood:'Wood / Walnut', glass:'Glass / Smoked', ceramic:'Ceramic', marble:'Marble' };
 
     var CONFIG_TYPE = {
@@ -1300,11 +1317,40 @@
 
     function materialFace(mat){
       switch(mat){
-        case 'wood':    return 'repeating-linear-gradient(95deg,#8a5a34,#8a5a34 5px,#7a4d2a 5px,#7a4d2a 7px,#96643a 7px,#96643a 13px)';
-        case 'glass':   return 'linear-gradient(120deg, rgba(35,45,50,.88), rgba(18,22,25,.94) 45%, rgba(150,185,195,.55) 50%, rgba(18,22,25,.94) 56%, rgba(35,45,50,.88))';
-        case 'ceramic': return 'radial-gradient(circle at 25% 30%, rgba(255,255,255,.5) 0 2px, transparent 2px), radial-gradient(circle at 65% 60%, rgba(255,255,255,.4) 0 1.5px, transparent 1.5px), radial-gradient(circle at 45% 80%, rgba(255,255,255,.4) 0 1.5px, transparent 1.5px), linear-gradient(135deg,#e9e3d6,#ddd6c6)';
-        case 'marble':  return 'linear-gradient(115deg, #efece4 0%, #d9d2c4 18%, #efece4 32%, #c9c0ac 42%, #efece4 58%, #d9d2c4 74%, #efece4 100%)';
-        default:        return 'linear-gradient(135deg,#c4c7ca,#8a8e92 40%,#d2d4d6 55%,#94979b)'; /* steel */
+        case 'wood':
+          return [
+            'linear-gradient(100deg, rgba(255,255,255,.16) 0%, transparent 8%, transparent 92%, rgba(0,0,0,.12) 100%)',
+            'repeating-linear-gradient(90deg, rgba(60,35,15,.35) 0 1px, transparent 1px 3px, rgba(255,220,180,.06) 3px 4px, transparent 4px 9px)',
+            'repeating-linear-gradient(89deg, #96643a 0 18px, #8a5a34 18px 40px, #7a4d2a 40px 46px, #a0703f 46px 70px)'
+          ].join(',');
+        case 'glass':
+          return [
+            'linear-gradient(115deg, transparent 30%, rgba(220,240,245,.55) 47%, rgba(255,255,255,.75) 50%, rgba(220,240,245,.5) 53%, transparent 68%)',
+            'linear-gradient(180deg, rgba(140,175,185,.25), transparent 30%)',
+            'linear-gradient(125deg, rgba(28,38,42,.9), rgba(15,20,23,.96) 55%, rgba(45,60,65,.85))'
+          ].join(',');
+        case 'ceramic':
+          return [
+            'radial-gradient(circle at 22% 25%, rgba(255,255,255,.55) 0 1.5px, transparent 1.5px)',
+            'radial-gradient(circle at 58% 68%, rgba(120,110,95,.18) 0 1.2px, transparent 1.2px)',
+            'radial-gradient(circle at 78% 30%, rgba(255,255,255,.4) 0 1px, transparent 1px)',
+            'radial-gradient(circle at 38% 82%, rgba(120,110,95,.15) 0 1.3px, transparent 1.3px)',
+            'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.5), transparent 60%)',
+            'linear-gradient(160deg,#ece5d6,#ddd3bf 60%,#d3c8b2)'
+          ].join(',');
+        case 'marble':
+          return [
+            'linear-gradient(105deg, transparent 40%, rgba(255,255,255,.5) 49%, rgba(255,255,255,.7) 50%, rgba(255,255,255,.4) 51%, transparent 60%)',
+            'repeating-linear-gradient(38deg, rgba(120,108,88,.22) 0 1px, transparent 1px 40px)',
+            'repeating-linear-gradient(-52deg, rgba(120,108,88,.16) 0 1px, transparent 1px 60px)',
+            'linear-gradient(115deg, #f4f1e8 0%, #ddd4c0 18%, #f4f1e8 32%, #cabfa5 42%, #f4f1e8 58%, #ddd4c0 74%, #f4f1e8 100%)'
+          ].join(',');
+        default: /* steel */
+          return [
+            'linear-gradient(100deg, transparent 20%, rgba(255,255,255,.5) 46%, rgba(255,255,255,.7) 50%, rgba(255,255,255,.4) 54%, transparent 80%)',
+            'repeating-linear-gradient(91deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px)',
+            'linear-gradient(170deg,#d6d9db,#9ea3a7 45%,#c3c7ca 55%,#8c9195)'
+          ].join(',');
       }
     }
 
@@ -1562,17 +1608,45 @@
       return { width:d.width, length:d.length, height:d.height, frameColor:'9005', topMaterial:'steel' };
     }
 
+    function swatchButtonsHTML(selectedId){
+      return RAL_CATALOGUE.map(function(c){
+        return '<button class="swatch' + (c.id === selectedId ? ' is-selected' : '') + '" data-ral="' + c.id + '" style="background:' + c.hex + ';" title="' + RAL_NAME[c.id] + '" aria-label="' + RAL_NAME[c.id] + '"></button>';
+      }).join('');
+    }
+
+    function renderFrameSwatches(){
+      document.getElementById('frame-color-swatches').innerHTML = swatchButtonsHTML(null);
+    }
+
+    function renderRalCatalogueDisplay(){
+      var el = document.getElementById('ral-catalogue-grid');
+      if(!el) return;
+      var groups = {};
+      var order = [];
+      RAL_CATALOGUE.forEach(function(c){
+        if(!groups[c.group]){ groups[c.group] = []; order.push(c.group); }
+        groups[c.group].push(c);
+      });
+      var html = '';
+      order.forEach(function(g){
+        html += '<div class="ral-group"><h4>' + g + '</h4><div class="ral-chip-row">';
+        groups[g].forEach(function(c){
+          html += '<div class="ral-chip"><span class="ral-chip-swatch" style="background:' + c.hex + ';"></span><span class="ral-chip-label">' + (/^\d/.test(c.id) ? 'RAL ' + c.id : c.name) + '<br><em>' + c.name + '</em></span></div>';
+        });
+        html += '</div></div>';
+      });
+      el.innerHTML = html;
+    }
+
     function renderWallArtControls(){
       var list = document.getElementById('piece-color-list');
       list.innerHTML = '';
-      var tpl = document.getElementById('piece-row-template');
-      CONFIG.pieces.forEach(function(p, i){
-        var row = tpl.content.cloneNode(true);
-        var rowEl = row.querySelector('.piece-row');
-        rowEl.dataset.pieceId = p.id;
-        row.querySelector('.piece-name').textContent = 'Piece ' + p.id;
+      CONFIG.pieces.forEach(function(p){
+        var row = document.createElement('div');
+        row.className = 'piece-row';
+        row.dataset.pieceId = p.id;
+        row.innerHTML = '<span class="piece-name">Piece ' + p.id + '</span><div class="swatch-row">' + swatchButtonsHTML(p.color) + '</div>';
         row.querySelectorAll('.swatch').forEach(function(s){
-          s.classList.toggle('is-selected', s.getAttribute('data-ral') === p.color);
           s.addEventListener('click', function(){
             p.color = s.getAttribute('data-ral');
             renderWallArtControls();

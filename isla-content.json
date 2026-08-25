@@ -1,0 +1,121 @@
+{
+  "hero": {
+    "title": "Steel, Built to Your Spec",
+    "subtitle": "BOKA Steel fabricates custom steel furniture, gates, and architectural pieces in Baouchrieh — laser cutting, welding, powder coating, and sandblasting under one roof, delivered anywhere in Lebanon."
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services We Offer",
+    "order": "Order Your Customized Item"
+  },
+  "services": {
+    "hub": {
+      "intro": "Four trades under one roof — laser cutting, welding, powder coating, and sandblasting. See how each one works, browse finished examples, and request a quotation directly."
+    },
+    "powdercoating": {
+      "title": "Powder Coating",
+      "cardTeaser": "A dry-powder finish baked on, not brushed on — harder, thicker, and built to outlast paint.",
+      "oneliner": "A dry-powder finish baked on, not brushed on — harder, thicker, and built to outlast paint.",
+      "explanation": "Powder coating applies a dry polymer powder to the steel using an electrostatic charge, then cures it in an oven until it melts into a smooth, continuous shell. Because there's no solvent flashing off as it dries, the coating goes on more evenly and comes out considerably tougher than liquid paint — better resistance to chipping, scratching, and fading from sun exposure. It's the finish behind the flat, factory-grade color you see on our table frames, chair bases, and gates, and it holds up to daily handling far better than a brushed-on topcoat.",
+      "turnaround": "Turnaround depends on piece size, color, and order volume — confirmed for your project when you request a quotation.",
+      "process": {
+        "step1": "Clean and pre-treat the metal so the powder has a bare, contaminant-free surface to bond to",
+        "step2": "Mask off any threads, hinges, or fittings that need to stay bare metal",
+        "step3": "Apply the powder electrostatically, coating every edge and corner evenly, then cure in the oven until it flows into a continuous film",
+        "step4": "Cool, inspect for coverage, and touch up any thin spots before it ships"
+      },
+      "cta": "Request a Quotation"
+    },
+    "welding": {
+      "title": "Welding",
+      "cardTeaser": "Fusing steel into a single structural piece — the joinery behind every frame, base, and gate we build.",
+      "oneliner": "Fusing steel into a single structural piece — the joinery behind every frame, base, and gate we build.",
+      "explanation": "Welding is how separate cuts of steel become one solid structure: heat melts the metal at the joint and it fuses as it cools, producing a bond as strong as the base material itself. This is the step that turns flat laser-cut panels and bar stock into an X-base table, a chair frame, or a gate — anywhere strength and rigidity matter more than a mechanical fastener would allow. Clean, well-ground welds also matter for looks, not just strength, since a visible seam on furniture or a gate reads as unfinished.",
+      "methods": "Suited to structural steel joins across frames, bases, and gates — mitered corners, flush seams, and hidden joints, ground smooth for a finished look.",
+      "turnaround": "Turnaround depends on the complexity of the assembly — confirmed for your project when you request a quotation.",
+      "process": {
+        "step1": "Cut and prep each piece to size, with edges squared for a clean fit",
+        "step2": "Fit up and clamp the pieces in position, checking alignment and angles, then tack weld to hold it in place",
+        "step3": "Run the final weld pass along every joint that needs full strength",
+        "step4": "Grind and smooth the welds so seams disappear, then check the frame for square, level, and structural soundness"
+      },
+      "cta": "Request a Quotation"
+    },
+    "lasercutting": {
+      "title": "Laser Cutting",
+      "cardTeaser": "CNC-precise cuts in steel sheet — the detail work behind our Greek-key trim and pattern gates.",
+      "oneliner": "CNC-precise cuts in steel sheet — the detail work behind our Greek-key trim and pattern gates.",
+      "explanation": "A CNC laser traces a design file through steel sheet with a level of precision and repeatability a hand tool can't match, which is what makes intricate, repeating patterns — like the Greek-key trim and vertical-slat work you'll see on our gates — possible at all. It also means every piece in a run comes out identical, so hardware, brackets, and decorative panels line up and fit the way they're designed to. It's the right process anytime a project calls for a custom pattern, tight tolerances, or clean edges that need no reworking before they're welded or finished.",
+      "precision": "Cuts hold tight, repeatable tolerances sheet after sheet, so patterned pieces and hardware line up without hand-fitting.",
+      "turnaround": "Turnaround depends on pattern complexity and sheet thickness — confirmed for your project when you request a quotation.",
+      "process": {
+        "step1": "Prepare the cut file from the approved design or pattern, and load the steel sheet at the required thickness",
+        "step2": "Run the laser cut, tracing every line and detail from the file",
+        "step3": "Deburr the cut edges so they're smooth to the touch",
+        "step4": "Dry-fit pieces against the design to confirm patterns and hardware line up, then hand off to welding or finishing"
+      },
+      "cta": "Request a Quotation"
+    },
+    "sandblasting": {
+      "title": "Sandblasting",
+      "cardTeaser": "Abrasive-blasted prep that strips steel back to bare metal so finishes actually stick.",
+      "oneliner": "Abrasive-blasted prep that strips steel back to bare metal so finishes actually stick.",
+      "explanation": "Sandblasting drives abrasive media at high pressure against the steel surface to strip away rust, mill scale, and old coatings down to bare metal, while leaving a slightly roughened texture (a 'profile') that gives the next coating something to grip. Skipping this step is the most common reason a powder coat or paint job fails early — flaking or bubbling because it was applied over a surface that was contaminated or too smooth to bond to. We use it both as prep before finishing and as a standalone service for anyone restoring old steel that needs to be brought back to clean metal.",
+      "turnaround": "Turnaround depends on surface area and condition — confirmed for your project when you request a quotation.",
+      "process": {
+        "step1": "Inspect the surface for rust, scale, or existing coatings, and mask off any areas that need to stay untouched",
+        "step2": "Blast the surface with abrasive media until it's clean, bare metal",
+        "step3": "Clear away dust and blast residue from every edge and cavity, then inspect the surface profile",
+        "step4": "Move straight to priming or powder coating to prevent flash rust from setting in"
+      },
+      "cta": "Request a Quotation"
+    }
+  },
+  "order": {
+    "intro": "Pick a category, choose a design, and build it to your own dimensions, frame color, and materials. Every selection updates a live preview as you go, so you see exactly what you're ordering before you send it to us — no guesswork, no back-and-forth over specs.",
+    "hub": {
+      "intro": "Pick a category, choose a design, and build it to your own dimensions, frame color, and materials. Every selection updates a live preview as you go — no guesswork, no back-and-forth over specs."
+    },
+    "categoryTemplate": {
+      "intro": "Choose the design that fits your space — every option below can be customized to your own dimensions, color, and materials on the next step.",
+      "design1": { "blurb": "A classic silhouette with clean lines — a versatile starting point for most spaces." },
+      "design2": { "blurb": "A modern, minimal take with a lighter frame and simplified form." },
+      "design3": { "blurb": "A more detailed design with added pattern work, for a decorative finish." }
+    },
+    "categories": {
+      "tables": {
+        "title": "Tables",
+        "blurb": "Our X-base dining and coffee tables built to your width, length, and height, with your choice of frame color and a top in steel, wood, glass, ceramic, or marble. Set up several at once and configure each one independently."
+      },
+      "chairs": {
+        "title": "Chairs",
+        "blurb": "Steel-framed chairs with upholstered seating, sized and finished to match your table or stand on their own. Choose your frame color and configure each chair in the order separately."
+      },
+      "bars": {
+        "title": "Bars",
+        "blurb": "Bar-height steel pieces built to your dimensions, with the same frame-color and top-material choices as our tables — steel, wood, glass, ceramic, or marble — so your bar matches the rest of the set."
+      },
+      "gates": {
+        "title": "Gates",
+        "blurb": "Laser-cut steel gates sized to your opening, from clean vertical-slat designs to ornate patterned panels with brass hardware. Choose your dimensions and frame color and we'll cut it to fit."
+      },
+      "doors": {
+        "title": "Doors",
+        "blurb": "Custom steel doors built to your exact opening, with your choice of frame color and finish. Sized and specified the same way as our gates, for a matched look across an entrance."
+      },
+      "wallart": {
+        "title": "Wall Art",
+        "blurb": "Laser-cut steel wall pieces made of multiple individual panels — pick a color for each piece and watch the full set update together in the live preview, so you can see exactly how the arrangement will look before it's built."
+      }
+    }
+  },
+  "quotation": {
+    "heading": "Request Your Quotation",
+    "subtext": "This summary is built automatically from everything you've selected — every item, every dimension, every color and material. Nothing to retype. Send it straight to our team on WhatsApp, or leave your name and number and we'll get back to you.",
+    "whatsappButtonLabel": "Send via WhatsApp",
+    "formNote": "Prefer we call you instead? Leave your name and phone number below and we'll follow up with pricing and lead time."
+  },
+  "footer": {
+    "tagline": "Custom steel fabrication in Baouchrieh — laser cutting, welding, powder coating, and sandblasting, delivered all over Lebanon."
+  }
+}

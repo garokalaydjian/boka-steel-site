@@ -1,0 +1,121 @@
+{
+  "hero": {
+    "title": "Steel, Built to Your Spec",
+    "subtitle": "BOKA Steel fabricates custom steel furniture, gates, and architectural pieces in Baouchrieh — laser cutting, welding, powder coating, and sandblasting under one roof, delivered anywhere in Lebanon."
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services We Offer",
+    "order": "Order Your Customized Item"
+  },
+  "services": {
+    "hub": {
+      "intro": "Four trades under one roof — laser cutting, welding, powder coating, and sandblasting. See how each one works, browse finished examples, and request a quotation directly."
+    },
+    "powdercoating": {
+      "title": "Powder Coating",
+      "cardTeaser": "A finish baked on, not brushed on — denser and more durable than paint, on any metal.",
+      "oneliner": "A finish baked on, not brushed on — denser and more durable than paint, on any metal.",
+      "explanation": "An electrostatically applied, oven-cured finish that bonds to steel, stainless, and aluminum alike. Denser, harder, and longer-lasting than paint — one process, any metal, a flawless result.",
+      "turnaround": "Confirmed with your quotation, based on volume and color.",
+      "process": {
+        "step1": "Surface prepared for full adhesion",
+        "step2": "Powder charged for even, edge-to-edge coverage",
+        "step3": "Cured until it flows into one seamless shell",
+        "step4": "Inspected to a flawless standard"
+      },
+      "cta": "Request a Quotation"
+    },
+    "welding": {
+      "title": "Welding",
+      "cardTeaser": "Precision fusion — steel, stainless, or aluminum, engineered for strength and finished seamless.",
+      "oneliner": "Precision fusion — steel, stainless, or aluminum, engineered for strength and finished seamless.",
+      "explanation": "Precision fusion that turns separate pieces of steel, stainless, or aluminum into one seamless structure — engineered for strength, then ground flawless for a clean, uninterrupted line.",
+      "methods": "TIG, MIG, and structural welding, matched to the metal and the job.",
+      "turnaround": "Confirmed with your quotation, based on complexity.",
+      "process": {
+        "step1": "Pieces cut and fitted with precision",
+        "step2": "Tack-welded and aligned true",
+        "step3": "Fully welded for structural strength",
+        "step4": "Ground and finished seamless"
+      },
+      "cta": "Request a Quotation"
+    },
+    "lasercutting": {
+      "title": "Laser Cutting",
+      "cardTeaser": "CNC precision through steel, stainless, or aluminum — every cut identical, to the millimeter.",
+      "oneliner": "CNC precision through steel, stainless, or aluminum — every cut identical, to the millimeter.",
+      "explanation": "CNC-guided precision cutting through steel, stainless, and aluminum — every line, curve, and repeating pattern cut identically, down to the millimeter.",
+      "precision": "Tight, repeatable tolerances, cut after cut.",
+      "turnaround": "Confirmed with your quotation, based on complexity and thickness.",
+      "process": {
+        "step1": "Design translated into a precise cut file",
+        "step2": "Metal cut with millimeter accuracy",
+        "step3": "Edges deburred to a clean finish",
+        "step4": "Every piece verified true to spec"
+      },
+      "cta": "Request a Quotation"
+    },
+    "sandblasting": {
+      "title": "Sandblasting",
+      "cardTeaser": "High-pressure abrasive cleaning that strips any metal back to bare surface.",
+      "oneliner": "High-pressure abrasive cleaning that strips any metal back to bare surface.",
+      "explanation": "High-pressure abrasive cleaning that strips steel, stainless, or aluminum back to bare surface — the essential first step for a finish that actually lasts.",
+      "turnaround": "Confirmed with your quotation, based on surface area.",
+      "process": {
+        "step1": "Surface assessed and prepped",
+        "step2": "Blasted clean to bare metal",
+        "step3": "Cleared of all residue",
+        "step4": "Ready immediately for coating or finishing"
+      },
+      "cta": "Request a Quotation"
+    }
+  },
+  "order": {
+    "intro": "Pick a category, choose a design, and build it to your own dimensions, frame color, and materials. Every selection updates a live preview as you go, so you see exactly what you're ordering before you send it to us — no guesswork, no back-and-forth over specs.",
+    "hub": {
+      "intro": "Pick a category, choose a design, and build it to your own dimensions, frame color, and materials. Every selection updates a live preview as you go — no guesswork, no back-and-forth over specs."
+    },
+    "categoryTemplate": {
+      "intro": "Choose the design that fits your space — every option below can be customized to your own dimensions, color, and materials on the next step.",
+      "design1": { "blurb": "A classic silhouette with clean lines — a versatile starting point for most spaces." },
+      "design2": { "blurb": "A modern, minimal take with a lighter frame and simplified form." },
+      "design3": { "blurb": "A more detailed design with added pattern work, for a decorative finish." }
+    },
+    "categories": {
+      "tables": {
+        "title": "Tables",
+        "blurb": "Our X-base dining and coffee tables — including nesting sets — built to your width, length, and height, with your choice of frame color and a top in steel, wood, glass, ceramic, or marble. Set up several at once and configure each one independently."
+      },
+      "chairs": {
+        "title": "Chairs",
+        "blurb": "Steel-framed chairs with upholstered seating on a black steel or wood-accented base, sized and finished to match your table or stand on their own. Choose your frame color and configure each chair in the order separately."
+      },
+      "bars": {
+        "title": "Bars",
+        "blurb": "Bar-height steel pieces built to your dimensions, with the same frame-color and top-material choices as our tables — steel, wood, glass, ceramic, or marble — so your bar matches the rest of the set."
+      },
+      "gates": {
+        "title": "Gates",
+        "blurb": "Laser-cut steel gates sized to your opening, from clean vertical-slat designs to ornate Greek-key trim panels finished with brass hardware. Choose your dimensions and frame color and we'll cut it to fit."
+      },
+      "doors": {
+        "title": "Doors",
+        "blurb": "Custom steel doors built to your exact opening, with your choice of frame color and finish. Sized and specified the same way as our gates, for a matched look across an entrance."
+      },
+      "wallart": {
+        "title": "Wall Art",
+        "blurb": "Laser-cut steel wall pieces made of multiple individual panels — pick a color for each piece and watch the full set update together in the live preview, so you can see exactly how the arrangement will look before it's built."
+      }
+    }
+  },
+  "quotation": {
+    "heading": "Request Your Quotation",
+    "subtext": "This summary is built automatically from everything you've selected — every item, every dimension, every color and material. Nothing to retype. Send it straight to our team on WhatsApp, or leave your name and number and we'll get back to you.",
+    "whatsappButtonLabel": "Send via WhatsApp",
+    "formNote": "Prefer we call you instead? Leave your name and phone number below and we'll follow up with pricing and lead time."
+  },
+  "footer": {
+    "tagline": "Custom steel fabrication in Baouchrieh — laser cutting, welding, powder coating, and sandblasting, delivered all over Lebanon."
+  }
+}

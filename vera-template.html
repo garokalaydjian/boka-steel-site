@@ -1378,8 +1378,19 @@
       return 'rgb(' + r + ',' + g + ',' + b + ')';
     }
 
+    function sheen(hex, lightAmt, darkAmt){
+      var light = shadeColor(hex, lightAmt);
+      var base = shadeColor(hex, 0);
+      var dark = shadeColor(hex, darkAmt);
+      return 'linear-gradient(105deg, ' + dark + ' 0%, ' + base + ' 35%, ' + light + ' 50%, ' + base + ' 65%, ' + dark + ' 100%)';
+    }
+
     function solidFaces(hex){
-      return { front: hex, back: hex, right: shadeColor(hex,-28), left: shadeColor(hex,-28), top: shadeColor(hex,22), bottom: shadeColor(hex,-45) };
+      return {
+        front: sheen(hex, 30, -18), back: sheen(hex, 30, -18),
+        right: sheen(hex, 6, -42), left: sheen(hex, 6, -42),
+        top: shadeColor(hex,26), bottom: shadeColor(hex,-50)
+      };
     }
 
     function topFaces(hex, mat){
@@ -1433,22 +1444,34 @@
     }
 
     function renderTableItem(group, w, d, h, it){
-      var topT = Math.max(5, h*0.07);
-      var legT = Math.max(4, Math.min(w,d)*0.06);
+      var topT = Math.max(4, h*0.045);
       var legH = h - topT;
+      var frameHex = RAL_HEX[it.frameColor];
+
       var topGroup = document.createElement('div');
       topGroup.className = 'part'; topGroup.style.transformStyle = 'preserve-3d';
       topGroup.style.transform = 'translateY(' + (-(legH + topT/2)) + 'px)';
-      appendBox3D(topGroup, w, d, topT, topFaces(RAL_HEX[it.frameColor], it.topMaterial));
+      appendBox3D(topGroup, w, d, topT, topFaces(frameHex, it.topMaterial));
       group.appendChild(topGroup);
 
-      var legSpan = Math.max(w,d) * 0.62;
-      [1,-1].forEach(function(dir){
-        var leg = document.createElement('div');
-        leg.className = 'part'; leg.style.transformStyle = 'preserve-3d';
-        leg.style.transform = 'translateY(' + (-legH/2) + 'px) rotateY(' + (dir*32) + 'deg)';
-        appendBox3D(leg, legSpan, legT, legH, solidFaces(RAL_HEX[it.frameColor]));
-        group.appendChild(leg);
+      // Angular star base — thin faceted blades converging under the top, echoing an
+      // X-base's origami-like geometry rather than two flat crossed slabs.
+      var finT = Math.max(2.5, Math.min(w,d)*0.022);
+      var finSpan = Math.max(w,d) * 0.58;
+      var hubDrop = legH * 0.16; // blades meet slightly below the tabletop, not flush at it
+      var fins = [
+        { ry:-52, rx:6,  span:1.00 },
+        { ry:-24, rx:-4, span:0.86 },
+        { ry: 0,  rx:8,  span:0.94 },
+        { ry: 24, rx:-4, span:0.86 },
+        { ry: 52, rx:6,  span:1.00 }
+      ];
+      fins.forEach(function(f){
+        var fin = document.createElement('div');
+        fin.className = 'part'; fin.style.transformStyle = 'preserve-3d';
+        fin.style.transform = 'translateY(' + (-(legH/2 - hubDrop/2)) + 'px) rotateY(' + f.ry + 'deg) rotateX(' + f.rx + 'deg)';
+        appendBox3D(fin, finSpan * f.span, finT, legH - hubDrop, solidFaces(frameHex));
+        group.appendChild(fin);
       });
     }
 

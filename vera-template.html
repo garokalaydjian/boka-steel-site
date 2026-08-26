@@ -373,6 +373,32 @@
   .seat-btn:hover{ border-color:var(--brass); }
   .seat-btn.is-selected{ border-color:var(--brass); background:color-mix(in srgb, var(--brass) 10%, var(--surface)); }
 
+  .video-section{ padding:56px 32px; text-align:center; }
+  .video-glow-wrap{
+    position:relative; max-width:420px; margin:32px auto 0; border-radius:10px;
+    isolation:isolate; /* keeps the halo's blur from bleeding into siblings' stacking */
+  }
+  .video-glow-halo{
+    position:absolute; inset:-40px; z-index:-1; border-radius:24px;
+    background:#3a3a3a; filter:blur(55px) saturate(1.6); opacity:0;
+    transition:opacity .6s ease, background-color .12s linear;
+  }
+  .video-glow-wrap.is-playing .video-glow-halo{ opacity:.85; }
+  .glow-video{
+    position:relative; width:100%; display:block; border-radius:10px; background:#111;
+    box-shadow:0 24px 60px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.06);
+  }
+  .video-play-btn{
+    position:absolute; z-index:2; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:72px; height:72px; border-radius:50%; background:var(--brass); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; box-shadow:0 10px 28px rgba(0,0,0,.4);
+    transition:transform .18s ease, background .18s ease;
+  }
+  .video-play-btn svg{ width:26px; height:26px; margin-left:3px; }
+  .video-play-btn:hover{ transform:translate(-50%,-50%) scale(1.07); background:var(--brass-deep); }
+  .video-glow-wrap.is-playing .video-play-btn{ display:none; }
+  @media (prefers-reduced-motion: reduce){ .video-glow-halo{ transition:none; } }
+
   .ral-section{ padding:56px 32px; }
   .ral-group{ margin-top:28px; }
   .ral-group h4{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--brass); margin:0 0 14px; }
@@ -615,6 +641,19 @@
           </div>
         </div>
       </div>
+      <div class="wrap video-section">
+        <span class="eyebrow">See It In Action</span>
+        <h2 style="font-size:2rem;margin-top:8px;">Powder Coating, Live</h2>
+        <div class="video-glow-wrap" id="video-powdercoating">
+          <div class="video-glow-halo" aria-hidden="true"></div>
+          <video class="glow-video" muted loop playsinline preload="none" poster="data:image/jpeg;base64,{{VIDEO_POWDERCOATING_POSTER}}">
+            <source src="assets/videos/powdercoating.mp4" type="video/mp4">
+          </video>
+          <button class="video-play-btn" aria-label="Play powder coating video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      </div>
       <div class="wrap ral-section">
         <span class="eyebrow">Color Options</span>
         <h2 style="font-size:2rem;margin-top:8px;">RAL Colour Catalogue</h2>
@@ -687,6 +726,19 @@
           </div>
         </div>
       </div>
+      <div class="wrap video-section">
+        <span class="eyebrow">See It In Action</span>
+        <h2 style="font-size:2rem;margin-top:8px;">Welding, Live</h2>
+        <div class="video-glow-wrap" id="video-welding">
+          <div class="video-glow-halo" aria-hidden="true"></div>
+          <video class="glow-video" muted loop playsinline preload="none" poster="data:image/jpeg;base64,{{VIDEO_WELDING_POSTER}}">
+            <source src="assets/videos/welding.mp4" type="video/mp4">
+          </video>
+          <button class="video-play-btn" aria-label="Play welding video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      </div>
       <div class="wrap service-cta">
         <p>Need structural or decorative welding?</p>
         <button class="btn btn-primary" id="request-quote-welding" data-open-quote>Request a Quotation</button>
@@ -751,6 +803,19 @@
             <h4 style="font-family:var(--font-mono);font-size:.85rem;letter-spacing:.06em;color:var(--ink);text-transform:none;">Assembly &amp; Fit Check</h4>
             <p class="step-copy" data-copy="services.lasercutting.process.step4"></p>
           </div>
+        </div>
+      </div>
+      <div class="wrap video-section">
+        <span class="eyebrow">See It In Action</span>
+        <h2 style="font-size:2rem;margin-top:8px;">Laser Cutting, Live</h2>
+        <div class="video-glow-wrap" id="video-lasercutting">
+          <div class="video-glow-halo" aria-hidden="true"></div>
+          <video class="glow-video" muted loop playsinline preload="none" poster="data:image/jpeg;base64,{{VIDEO_LASERCUTTING_POSTER}}">
+            <source src="assets/videos/lasercutting.mp4" type="video/mp4">
+          </video>
+          <button class="video-play-btn" aria-label="Play laser cutting video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
         </div>
       </div>
       <div class="wrap service-cta">
@@ -1204,6 +1269,56 @@
       sub.designs.forEach(function(d, i){ html += designCardHTML(subSlug, d, i); });
       grid.innerHTML = html;
     }
+
+    function initGlowVideos(){
+      document.querySelectorAll('.video-glow-wrap').forEach(function(wrap){
+        var video = wrap.querySelector('.glow-video');
+        var halo = wrap.querySelector('.video-glow-halo');
+        var playBtn = wrap.querySelector('.video-play-btn');
+        if(!video || !halo) return;
+
+        var canvas = document.createElement('canvas');
+        canvas.width = 24; canvas.height = 24;
+        var ctx = canvas.getContext('2d', { willReadFrequently: true });
+        var rafId = null;
+
+        function sampleFrame(){
+          rafId = null;
+          if(video.paused || video.ended) return;
+          try {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            var data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            var r = 0, g = 0, b = 0, n = 0;
+            for(var i = 0; i < data.length; i += 4){ r += data[i]; g += data[i+1]; b += data[i+2]; n++; }
+            r = Math.round(r / n); g = Math.round(g / n); b = Math.round(b / n);
+            // Push toward saturation so the ambient glow reads as light, not a muddy average.
+            var max = Math.max(r, g, b, 1);
+            var boost = 255 / max * 0.92;
+            r = Math.min(255, Math.round(r * boost));
+            g = Math.min(255, Math.round(g * boost));
+            b = Math.min(255, Math.round(b * boost));
+            halo.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+          } catch(err){ /* frame not decodable yet — skip, try next tick */ }
+          rafId = requestAnimationFrame(sampleFrame);
+        }
+
+        if(playBtn){
+          playBtn.addEventListener('click', function(){
+            wrap.classList.add('is-playing');
+            video.setAttribute('controls', '');
+            video.play();
+          });
+        }
+        video.addEventListener('play', function(){
+          wrap.classList.add('is-playing');
+          if(!rafId) rafId = requestAnimationFrame(sampleFrame);
+        });
+        video.addEventListener('pause', function(){
+          if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+        });
+      });
+    }
+    initGlowVideos();
 
     renderMainCategories();
 

@@ -63,6 +63,9 @@ my %imgmap = (
   IMG_WALLART_RIBBON_BLACK  => "assets\\wallart_ribbon_black.b64",
   IMG_WALLART_RIBBON_BRONZE => "assets\\wallart_ribbon_bronze.b64",
   IMG_DESIGN_DINING_XBASE   => "assets\\designs\\dining_marble_xbase.b64",
+  VIDEO_WELDING_POSTER       => "assets\\videos\\poster_welding.b64",
+  VIDEO_LASERCUTTING_POSTER  => "assets\\videos\\poster_lasercutting.b64",
+  VIDEO_POWDERCOATING_POSTER => "assets\\videos\\poster_powdercoating.b64",
 );
 for my $token (keys %imgmap) {
   my $b64 = slurp_raw("$dir\\$imgmap{$token}");

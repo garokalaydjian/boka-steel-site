@@ -120,8 +120,15 @@
 
   .contact-delivery svg{ width:14px; height:14px; color:var(--muted); flex:none; }
 
-  #ambient-canvas{ position:fixed; inset:0; z-index:6; width:100%; height:100%; pointer-events:none; opacity:0; transition:opacity 1.1s ease; }
+  /* Sits right after each service's hero video — pulled up with a negative margin so it
+     overlaps the video's lower edge, then extends down into the page below, so particles
+     read as spilling out of the video rather than a page-wide wash. */
+  #ambient-canvas{
+    position:relative; z-index:5; display:block; width:100%; height:460px; margin-top:-130px;
+    pointer-events:none; opacity:0; transition:opacity .9s ease;
+  }
   #ambient-canvas.is-active{ opacity:1; }
+  @media (max-width:640px){ #ambient-canvas{ height:340px; margin-top:-90px; } }
   @media (prefers-reduced-motion: reduce){ #ambient-canvas{ display:none; } }
 
   .site-header{ position:sticky; top:0; z-index:40; background:rgba(245,242,234,.94); backdrop-filter:blur(6px); border-bottom:var(--edge); }
@@ -247,18 +254,15 @@
   .service-detail-hero{ position:relative; height:52vh; min-height:360px; overflow:hidden; border-bottom:var(--edge-brass); }
   .service-detail-hero img, .service-detail-hero .photo-pending{ width:100%; height:100%; object-fit:cover; filter:saturate(.97) brightness(.86); }
 
-  /* Hero videos are shot portrait (phone footage) — object-fit:cover would crop most of
-     the frame away on a wide desktop banner while barely cropping on a narrow phone screen,
-     which is why it looked like two different videos per device. Fix: always show the full
-     frame (object-fit:contain, never crop) and give each breakpoint a container shaped to
-     suit it, instead of forcing one wide banner shape on a portrait clip everywhere. */
-  .service-detail-hero.has-video{ height:auto; min-height:0; background:var(--ink); }
-  .service-detail-hero .hero-video{
-    display:block; width:100%; height:82vh; max-height:760px; object-fit:contain; background:var(--ink);
-  }
-  @media (min-width:900px){
-    .service-detail-hero .hero-video{ width:min(46vh, 480px); height:82vh; margin:0 auto; }
-  }
+  /* Hero videos are shot portrait (phone footage) going into a wide banner, so some
+     vertical crop is unavoidable — the fix is not "show the whole frame" (that made the
+     subject tiny and the banner look like an awkward tall strip). Keep the same wide
+     banner every other hero uses, crop with object-fit:cover, and aim the crop at the
+     part of each specific frame where the actual subject sits, checked per video. */
+  .service-detail-hero .hero-video{ width:100%; height:100%; object-fit:cover; filter:saturate(.97) brightness(.86); }
+  .service-detail-hero .hero-video.pos-lasercutting{ object-position:center 20%; }
+  .service-detail-hero .hero-video.pos-welding{ object-position:center 46%; }
+  .service-detail-hero .hero-video.pos-powdercoating{ object-position:center 42%; }
   .service-detail-hero .hero-caption{
     position:absolute; left:0; right:0; bottom:0; padding:40px 32px;
     background:linear-gradient(0deg, rgba(33,29,21,.9) 0%, transparent 100%);
@@ -578,8 +582,8 @@
          SERVICE DETAIL — Powder Coating
          ============================================================ -->
     <section id="screen-service-powder-coating" class="screen service-detail">
-      <div class="service-detail-hero has-video">
-        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="data:image/jpeg;base64,{{VIDEO_POWDERCOATING_POSTER}}" aria-label="Powder coating a steel piece — spray gun applying charged powder in the finishing booth">
+      <div class="service-detail-hero">
+        <video class="hero-video pos-powdercoating" autoplay muted loop playsinline preload="auto" poster="data:image/jpeg;base64,{{VIDEO_POWDERCOATING_POSTER}}" aria-label="Powder coating a steel piece — spray gun applying charged powder in the finishing booth">
           <source src="assets/videos/powdercoating.mp4" type="video/mp4">
         </video>
         <div class="hero-caption">
@@ -652,8 +656,8 @@
          SERVICE DETAIL — Welding
          ============================================================ -->
     <section id="screen-service-welding" class="screen service-detail">
-      <div class="service-detail-hero has-video">
-        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="data:image/jpeg;base64,{{VIDEO_WELDING_POSTER}}" aria-label="A BOKA Steel welder at work, sparks flying, mid-weld on a steel piece">
+      <div class="service-detail-hero">
+        <video class="hero-video pos-welding" autoplay muted loop playsinline preload="auto" poster="data:image/jpeg;base64,{{VIDEO_WELDING_POSTER}}" aria-label="A BOKA Steel welder at work, sparks flying, mid-weld on a steel piece">
           <source src="assets/videos/welding.mp4" type="video/mp4">
         </video>
         <div class="hero-caption">
@@ -719,8 +723,8 @@
          SERVICE DETAIL — Laser Cutting
          ============================================================ -->
     <section id="screen-service-laser-cutting" class="screen service-detail">
-      <div class="service-detail-hero has-video">
-        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="data:image/jpeg;base64,{{VIDEO_LASERCUTTING_POSTER}}" aria-label="A CNC fiber laser cutting head slicing through a steel plate">
+      <div class="service-detail-hero">
+        <video class="hero-video pos-lasercutting" autoplay muted loop playsinline preload="auto" poster="data:image/jpeg;base64,{{VIDEO_LASERCUTTING_POSTER}}" aria-label="A CNC fiber laser cutting head slicing through a steel plate">
           <source src="assets/videos/lasercutting.mp4" type="video/mp4">
         </video>
         <div class="hero-caption">
@@ -1239,21 +1243,25 @@
     /* ============================================================
        AMBIENT THEME — subtle full-page particle atmosphere per service
        ============================================================ */
+    // Falls from the top of the zone downward (like it's spilling out of the video above),
+    // not rising — colors matched to each process's actual light/material color, not spark
+    // color in general: welding arc reads blue-white, laser sparks read yellow-gold, and
+    // powder coating is literally white powder, not warm embers.
     var AMBIENT_THEMES = {
       'screen-service-welding': {
-        colors: ['#ffedd5','#ffb347','#ff7a1a','#fff4e0'],
-        count: 26, sizeMin: 1, sizeMax: 3.2, speedMin: 0.6, speedMax: 1.8,
-        driftAmp: 18, life: 90, lifeVar: 60, opacity: 0.55, blur: 0
+        colors: ['#eaf6ff','#bfe3ff','#7ec8f2','#ffffff'],
+        count: 22, sizeMin: 1, sizeMax: 3, speedMin: 1.0, speedMax: 2.4,
+        driftAmp: 16, gravity: 0.02, opacity: 0.6, blur: 0
       },
       'screen-service-laser-cutting': {
-        colors: ['#eafcff','#9be8ff','#ffd76a','#ffffff'],
-        count: 22, sizeMin: 0.8, sizeMax: 2.6, speedMin: 1.0, speedMax: 2.6,
-        driftAmp: 12, life: 70, lifeVar: 40, opacity: 0.5, blur: 0
+        colors: ['#fff4c2','#ffd447','#ffb300','#fff9e0'],
+        count: 20, sizeMin: 0.8, sizeMax: 2.6, speedMin: 1.4, speedMax: 3.0,
+        driftAmp: 10, gravity: 0.03, opacity: 0.55, blur: 0
       },
       'screen-service-powder-coating': {
-        colors: ['#fff8ea','#f3e6c8','#ffffff'],
-        count: 14, sizeMin: 14, sizeMax: 34, speedMin: 0.08, speedMax: 0.25,
-        driftAmp: 34, life: 260, lifeVar: 140, opacity: 0.16, blur: 14
+        colors: ['#ffffff','#f7f7f7'],
+        count: 26, sizeMin: 3, sizeMax: 9, speedMin: 0.3, speedMax: 0.9,
+        driftAmp: 30, gravity: 0.004, opacity: 0.4, blur: 4
       }
     };
 
@@ -1265,23 +1273,22 @@
     var ambientCurrentScreen = null;
 
     function resizeAmbientCanvas(){
-      ambientCanvas.width = window.innerWidth;
-      ambientCanvas.height = window.innerHeight;
+      var rect = ambientCanvas.getBoundingClientRect();
+      ambientCanvas.width = rect.width || window.innerWidth;
+      ambientCanvas.height = rect.height || 460;
     }
     window.addEventListener('resize', resizeAmbientCanvas);
-    resizeAmbientCanvas();
 
-    function spawnAmbientParticle(scatterY){
+    function spawnAmbientParticle(){
       var c = ambientConfig;
       return {
         x: Math.random() * ambientCanvas.width,
-        y: scatterY ? Math.random() * ambientCanvas.height : ambientCanvas.height + Math.random() * 40,
-        size: c.sizeMin + Math.random() * (c.sizeMax - c.sizeMin),
-        speed: c.speedMin + Math.random() * (c.speedMax - c.speedMin),
+        y: -10 - Math.random() * 120,
+        vy: c.speedMin + Math.random() * (c.speedMax - c.speedMin),
         phase: Math.random() * Math.PI * 2,
         driftAmp: c.driftAmp * (0.5 + Math.random() * 0.5),
-        life: 0,
-        maxLife: c.life + Math.random() * c.lifeVar,
+        size: c.sizeMin + Math.random() * (c.sizeMax - c.sizeMin),
+        age: 0,
         color: c.colors[Math.floor(Math.random() * c.colors.length)]
       };
     }
@@ -1289,22 +1296,23 @@
     function ambientTick(){
       var c = ambientConfig;
       if(!c){ ambientRafId = null; return; }
-      ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+      var h = ambientCanvas.height;
+      ambientCtx.clearRect(0, 0, ambientCanvas.width, h);
       ambientCtx.filter = c.blur ? 'blur(' + c.blur + 'px)' : 'none';
       ambientParticles.forEach(function(p){
-        p.y -= p.speed;
-        p.life++;
-        p.x += Math.sin((p.life * 0.02) + p.phase) * (p.driftAmp * 0.02);
-        var lifeRatio = p.life / p.maxLife;
-        var fade = lifeRatio < 0.12 ? (lifeRatio / 0.12) : (lifeRatio > 0.75 ? Math.max(0, (1 - lifeRatio) / 0.25) : 1);
-        ambientCtx.globalAlpha = Math.max(0, c.opacity * fade);
+        p.vy += c.gravity;
+        p.y += p.vy;
+        p.age++;
+        p.x += Math.sin((p.age * 0.03) + p.phase) * (p.driftAmp * 0.03);
+        var travel = p.y / h;
+        var fadeIn = Math.min(1, (p.y + 20) / 40);
+        var fadeOut = travel > 0.6 ? Math.max(0, (1 - travel) / 0.4) : 1;
+        ambientCtx.globalAlpha = Math.max(0, c.opacity * Math.min(fadeIn, fadeOut));
         ambientCtx.fillStyle = p.color;
         ambientCtx.beginPath();
         ambientCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ambientCtx.fill();
-        if(p.life >= p.maxLife || p.y < -40){
-          Object.assign(p, spawnAmbientParticle(false));
-        }
+        if(p.y > h + 20){ Object.assign(p, spawnAmbientParticle()); }
       });
       ambientRafId = requestAnimationFrame(ambientTick);
     }
@@ -1313,10 +1321,26 @@
       var config = AMBIENT_THEMES[themeKey];
       if(!config) return;
       ambientConfig = config;
-      ambientParticles = [];
-      for(var i = 0; i < config.count; i++){ ambientParticles.push(spawnAmbientParticle(true)); }
-      if(!ambientRafId) ambientRafId = requestAnimationFrame(ambientTick);
+      resizeAmbientCanvas();
+      if(!ambientCanvas.width){
+        // Layout hasn't settled yet (e.g. right after inserting the canvas into a
+        // freshly-shown screen) — retry once next frame instead of seeding particles
+        // into a zero-size buffer.
+        requestAnimationFrame(function(){ resizeAmbientCanvas(); seedAndRun(); });
+      } else {
+        seedAndRun();
+      }
       ambientCanvas.classList.add('is-active');
+
+      function seedAndRun(){
+        ambientParticles = [];
+        for(var i = 0; i < config.count; i++){
+          var p = spawnAmbientParticle();
+          p.y = Math.random() * ambientCanvas.height;
+          ambientParticles.push(p);
+        }
+        if(!ambientRafId) ambientRafId = requestAnimationFrame(ambientTick);
+      }
     }
 
     function stopAmbient(){
@@ -1329,8 +1353,14 @@
     function setAmbientTheme(screenId){
       if(screenId === ambientCurrentScreen) return;
       ambientCurrentScreen = screenId;
-      if(AMBIENT_THEMES[screenId]){ startAmbient(screenId); }
-      else { stopAmbient(); }
+      var config = AMBIENT_THEMES[screenId];
+      if(config){
+        var hero = document.querySelector('#' + screenId + ' .service-detail-hero');
+        if(hero) hero.insertAdjacentElement('afterend', ambientCanvas);
+        startAmbient(screenId);
+      } else {
+        stopAmbient();
+      }
     }
 
     function applyState(state){

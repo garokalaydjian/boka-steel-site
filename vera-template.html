@@ -383,43 +383,29 @@
   .ral-chip-label em{ font-style:normal; color:var(--muted); font-size:.9em; }
   @media (max-width:640px){ .ral-chip-row{ grid-template-columns:repeat(auto-fill, minmax(100px, 1fr)); } }
 
-  #preview-panel{ display:flex; flex-direction:column; padding:0; }
+  #preview-panel{ display:flex; flex-direction:column; padding:0; background:var(--surface); }
   .preview-toolbar{ padding:18px 24px; border-bottom:var(--edge); display:flex; align-items:center; justify-content:space-between; }
-  /* Deliberately a darker "spotlit studio stage" for the 3D preview — a
-     contained, intentional contrast area (like a product photography floor)
-     so RAL colors/materials read clearly against a neutral backdrop; this is
-     not a leftover dark-theme surface, it's scoped to this one element. */
-  .preview-stage-wrap{ position:relative; flex:1; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 50% 40%, #2b2419 0%, #18150f 70%); min-height:420px; }
-  #preview-stage{ width:100%; height:100%; }
+  .preview-stage-wrap{ position:relative; flex:1; padding:8px 24px; min-height:360px; }
+  #preview-stage{ width:100%; }
 
   .configurator-layout.wallart-mode{ grid-template-columns:340px 1fr; }
   @media (max-width:900px){ .configurator-layout.wallart-mode{ grid-template-columns:1fr; } }
 
-  .scene{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; perspective:1100px; cursor:grab; touch-action:none; user-select:none; }
-  .scene:active{ cursor:grabbing; }
-  .rig{ position:relative; transform-style:preserve-3d; transition:transform .04s linear; }
-  .item-group{ position:absolute; top:0; left:0; transform-style:preserve-3d; transition:filter .15s ease; }
-  .item-group.is-selected .part .face{ filter:brightness(1.04); }
-  .part{ position:absolute; top:0; left:0; }
-  .face{ position:absolute; top:0; left:0; backface-visibility:hidden; border:1px solid rgba(0,0,0,.15); box-sizing:border-box; }
+  .summary-row{ display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .summary-row:last-child{ border-bottom:none; }
+  .summary-row-heading{ padding-top:22px; cursor:pointer; }
+  .summary-row-heading:first-child{ padding-top:12px; }
+  .summary-row-heading .summary-row-label{ font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--ink); text-transform:none; letter-spacing:0; }
+  .summary-row-heading.is-selected .summary-row-label{ color:var(--brass); }
+  .summary-swatch{ width:22px; height:22px; border-radius:50%; flex:none; box-shadow:inset 0 0 0 1px rgba(0,0,0,.15); }
+  .summary-swatch-material{ background:linear-gradient(135deg,#c4c7ca,#8a8e92); }
+  .summary-swatch-material.wood{ background:linear-gradient(100deg,#96643a,#7a4d2a); }
+  .summary-swatch-material.glass{ background:linear-gradient(135deg,#8fa8ae,#2a3438); }
+  .summary-swatch-material.ceramic{ background:linear-gradient(135deg,#ece5d6,#ddd3bf); }
+  .summary-swatch-material.marble{ background:linear-gradient(115deg,#f4f1e8,#cabfa5); }
+  .summary-row-label{ font-family:var(--font-mono); font-size:.76rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); flex:1; }
+  .summary-row-value{ font-family:var(--font-mono); font-size:.82rem; color:var(--ink); }
 
-  .wallart-preview{ display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; padding:24px; max-width:340px; }
-  .wallart-piece{ aspect-ratio:1; border-radius:10px; box-shadow:0 8px 18px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.15); transition:background .15s ease; }
-
-  .summary-line{ font-family:var(--font-mono); font-size:.82rem; color:var(--ink); padding:4px 0; border-bottom:1px solid var(--line); }
-  .summary-line:last-child{ border-bottom:none; }
-  .summary-item-name{ color:var(--brass); }
-  #preview-stage:empty::before{
-    content:"LIVE PREVIEW RENDERS HERE"; font-family:var(--font-mono); font-size:.72rem; letter-spacing:.14em;
-    color:rgba(245,242,234,.55); display:flex; align-items:center; justify-content:center; width:100%; height:100%; text-align:center;
-    border:1px dashed rgba(245,242,234,.22); margin:24px;
-  }
-  .preview-rotate-hint{
-    position:absolute; bottom:22px; left:50%; transform:translateX(-50%);
-    display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:.66rem; letter-spacing:.1em;
-    color:rgba(245,242,234,.7); text-transform:uppercase; pointer-events:none;
-  }
-  .preview-rotate-hint svg{ width:16px; height:16px; color:var(--brass); }
   .configurator-footer{ padding:20px 24px; border-top:var(--edge); display:flex; justify-content:flex-end; }
 
   /* ============================================================
@@ -981,15 +967,11 @@
           <!-- Live preview panel -->
           <div class="configurator-panel" id="preview-panel">
             <div class="preview-toolbar">
-              <span class="eyebrow">Live Preview</span>
+              <span class="eyebrow">Your Selection</span>
               <span class="palette-note" id="preview-spec-label">120 × 70 × 45 CM</span>
             </div>
             <div class="preview-stage-wrap">
-              <div id="preview-stage" role="img" aria-label="Live 3D preview of the configured item"></div>
-              <div class="preview-rotate-hint">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12a8 8 0 0113-6"/><path d="M20 12a8 8 0 01-13 6"/><path d="M17 4v3h-3M7 20v-3h3"/></svg>
-                Drag to Rotate
-              </div>
+              <div id="preview-stage" aria-live="polite" aria-label="Your current selection"></div>
             </div>
             <div class="configurator-footer">
               <button class="btn btn-primary" id="configurator-request-quote-btn" data-open-quote>Request a Quotation</button>
@@ -1330,250 +1312,48 @@
 
     var CONFIG = null; // { type, category, subcategory, designName, items:[...] } or wall-art shape
 
-    function materialFace(mat){
-      switch(mat){
-        case 'wood':
-          return [
-            'linear-gradient(100deg, rgba(255,255,255,.16) 0%, transparent 8%, transparent 92%, rgba(0,0,0,.12) 100%)',
-            'repeating-linear-gradient(90deg, rgba(60,35,15,.35) 0 1px, transparent 1px 3px, rgba(255,220,180,.06) 3px 4px, transparent 4px 9px)',
-            'repeating-linear-gradient(89deg, #96643a 0 18px, #8a5a34 18px 40px, #7a4d2a 40px 46px, #a0703f 46px 70px)'
-          ].join(',');
-        case 'glass':
-          return [
-            'linear-gradient(115deg, transparent 30%, rgba(220,240,245,.55) 47%, rgba(255,255,255,.75) 50%, rgba(220,240,245,.5) 53%, transparent 68%)',
-            'linear-gradient(180deg, rgba(140,175,185,.25), transparent 30%)',
-            'linear-gradient(125deg, rgba(28,38,42,.9), rgba(15,20,23,.96) 55%, rgba(45,60,65,.85))'
-          ].join(',');
-        case 'ceramic':
-          return [
-            'radial-gradient(circle at 22% 25%, rgba(255,255,255,.55) 0 1.5px, transparent 1.5px)',
-            'radial-gradient(circle at 58% 68%, rgba(120,110,95,.18) 0 1.2px, transparent 1.2px)',
-            'radial-gradient(circle at 78% 30%, rgba(255,255,255,.4) 0 1px, transparent 1px)',
-            'radial-gradient(circle at 38% 82%, rgba(120,110,95,.15) 0 1.3px, transparent 1.3px)',
-            'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.5), transparent 60%)',
-            'linear-gradient(160deg,#ece5d6,#ddd3bf 60%,#d3c8b2)'
-          ].join(',');
-        case 'marble':
-          return [
-            'linear-gradient(105deg, transparent 40%, rgba(255,255,255,.5) 49%, rgba(255,255,255,.7) 50%, rgba(255,255,255,.4) 51%, transparent 60%)',
-            'repeating-linear-gradient(38deg, rgba(120,108,88,.22) 0 1px, transparent 1px 40px)',
-            'repeating-linear-gradient(-52deg, rgba(120,108,88,.16) 0 1px, transparent 1px 60px)',
-            'linear-gradient(115deg, #f4f1e8 0%, #ddd4c0 18%, #f4f1e8 32%, #cabfa5 42%, #f4f1e8 58%, #ddd4c0 74%, #f4f1e8 100%)'
-          ].join(',');
-        default: /* steel */
-          return [
-            'linear-gradient(100deg, transparent 20%, rgba(255,255,255,.5) 46%, rgba(255,255,255,.7) 50%, rgba(255,255,255,.4) 54%, transparent 80%)',
-            'repeating-linear-gradient(91deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px)',
-            'linear-gradient(170deg,#d6d9db,#9ea3a7 45%,#c3c7ca 55%,#8c9195)'
-          ].join(',');
-      }
-    }
-
-    function shadeColor(hex, amt){
-      var c = hex.replace('#','');
-      var r = parseInt(c.substring(0,2),16), g = parseInt(c.substring(2,4),16), b = parseInt(c.substring(4,6),16);
-      r = Math.max(0, Math.min(255, r + amt));
-      g = Math.max(0, Math.min(255, g + amt));
-      b = Math.max(0, Math.min(255, b + amt));
-      return 'rgb(' + r + ',' + g + ',' + b + ')';
-    }
-
-    function sheen(hex, lightAmt, darkAmt){
-      var light = shadeColor(hex, lightAmt);
-      var base = shadeColor(hex, 0);
-      var dark = shadeColor(hex, darkAmt);
-      return 'linear-gradient(105deg, ' + dark + ' 0%, ' + base + ' 35%, ' + light + ' 50%, ' + base + ' 65%, ' + dark + ' 100%)';
-    }
-
-    function solidFaces(hex){
-      return {
-        front: sheen(hex, 30, -18), back: sheen(hex, 30, -18),
-        right: sheen(hex, 6, -42), left: sheen(hex, 6, -42),
-        top: shadeColor(hex,26), bottom: shadeColor(hex,-50)
-      };
-    }
-
-    function topFaces(hex, mat){
-      var side = shadeColor(hex,-28);
-      return { front: side, back: side, right: side, left: side, top: materialFace(mat), bottom: shadeColor(hex,-45) };
-    }
-
-    function slatFaces(hex){
-      var base = shadeColor(hex,-10);
-      var slats = 'repeating-linear-gradient(90deg, ' + shadeColor(hex,18) + ' 0 3px, ' + base + ' 3px 9px)';
-      return { front: slats, back: base, right: shadeColor(hex,-30), left: shadeColor(hex,-30), top: shadeColor(hex,10), bottom: shadeColor(hex,-45) };
-    }
-
-    function makeFace(name, w, h, transform, bg){
-      var f = document.createElement('div');
-      f.className = 'face face-' + name;
-      f.style.width = w + 'px';
-      f.style.height = h + 'px';
-      f.style.marginLeft = (-w/2) + 'px';
-      f.style.marginTop = (-h/2) + 'px';
-      f.style.transform = transform;
-      f.style.background = bg;
-      return f;
-    }
-
-    // Appends a 3D box (6 faces) directly into `parent`, centered on parent's own (0,0) anchor.
-    function appendBox3D(parent, w, d, h, faces){
-      var specs = [
-        ['front',  w, h, 'translateZ('+(d/2)+'px)', faces.front],
-        ['back',   w, h, 'rotateY(180deg) translateZ('+(d/2)+'px)', faces.back],
-        ['right',  d, h, 'rotateY(90deg) translateZ('+(w/2)+'px)', faces.right],
-        ['left',   d, h, 'rotateY(-90deg) translateZ('+(w/2)+'px)', faces.left],
-        ['top',    w, d, 'rotateX(90deg) translateZ('+(h/2)+'px)', faces.top],
-        ['bottom', w, d, 'rotateX(-90deg) translateZ('+(h/2)+'px)', faces.bottom]
-      ];
-      specs.forEach(function(s){ parent.appendChild(makeFace(s[0], s[1], s[2], s[3], s[4])); });
-    }
-
-    var PX_PER_CM = 2.6;
-    var MAX_STAGE_PX = 460;
-    var rotY = -28, rotX = -14;
-
-    function computeScale(items){
-      var totalCm = items.reduce(function(s,it){ return s + it.width; }, 0) + (items.length-1) * 20;
-      var tallestCm = items.reduce(function(m,it){ return Math.max(m, it.height); }, 0);
-      var scale = PX_PER_CM;
-      var projectedW = totalCm * scale;
-      var projectedH = tallestCm * scale;
-      var limit = Math.min(MAX_STAGE_PX / Math.max(projectedW,1), MAX_STAGE_PX / Math.max(projectedH,1), 1);
-      return scale * limit;
-    }
-
-    function renderTableItem(group, w, d, h, it){
-      var topT = Math.max(4, h*0.045);
-      var legH = h - topT;
-      var frameHex = RAL_HEX[it.frameColor];
-
-      var topGroup = document.createElement('div');
-      topGroup.className = 'part'; topGroup.style.transformStyle = 'preserve-3d';
-      topGroup.style.transform = 'translateY(' + (-(legH + topT/2)) + 'px)';
-      appendBox3D(topGroup, w, d, topT, topFaces(frameHex, it.topMaterial));
-      group.appendChild(topGroup);
-
-      // Angular star base — thin faceted blades converging under the top, echoing an
-      // X-base's origami-like geometry rather than two flat crossed slabs.
-      var finT = Math.max(2.5, Math.min(w,d)*0.022);
-      var finSpan = Math.max(w,d) * 0.58;
-      var hubDrop = legH * 0.16; // blades meet slightly below the tabletop, not flush at it
-      var fins = [
-        { ry:-52, rx:6,  span:1.00 },
-        { ry:-24, rx:-4, span:0.86 },
-        { ry: 0,  rx:8,  span:0.94 },
-        { ry: 24, rx:-4, span:0.86 },
-        { ry: 52, rx:6,  span:1.00 }
-      ];
-      fins.forEach(function(f){
-        var fin = document.createElement('div');
-        fin.className = 'part'; fin.style.transformStyle = 'preserve-3d';
-        fin.style.transform = 'translateY(' + (-(legH/2 - hubDrop/2)) + 'px) rotateY(' + f.ry + 'deg) rotateX(' + f.rx + 'deg)';
-        appendBox3D(fin, finSpan * f.span, finT, legH - hubDrop, solidFaces(frameHex));
-        group.appendChild(fin);
-      });
-    }
-
-    function renderSlabItem(group, w, d, h, it){
-      var slab = document.createElement('div');
-      slab.className = 'part'; slab.style.transformStyle = 'preserve-3d';
-      slab.style.transform = 'translateY(' + (-h/2) + 'px)';
-      appendBox3D(slab, w, Math.max(6, d), h, slatFaces(RAL_HEX[it.frameColor]));
-      group.appendChild(slab);
-    }
-
-    function renderBoxItem(group, w, d, h, it){
-      var box = document.createElement('div');
-      box.className = 'part'; box.style.transformStyle = 'preserve-3d';
-      box.style.transform = 'translateY(' + (-h/2) + 'px)';
-      appendBox3D(box, w, d, h, solidFaces(RAL_HEX[it.frameColor]));
-      group.appendChild(box);
-    }
-
-    function renderWallArtPreview(){
+    function renderSummary(){
       var stage = document.getElementById('preview-stage');
-      stage.innerHTML = '';
-      var wrap = document.createElement('div');
-      wrap.className = 'wallart-preview';
-      CONFIG.pieces.forEach(function(p){
-        var el = document.createElement('div');
-        el.className = 'wallart-piece';
-        el.style.background = RAL_HEX[p.color];
-        wrap.appendChild(el);
-      });
-      stage.appendChild(wrap);
-    }
-
-    function renderPreview(){
-      if(CONFIG.type === 'wallart'){ renderWallArtPreview(); return; }
-
-      var stage = document.getElementById('preview-stage');
-      stage.innerHTML = '';
-      var scene = document.createElement('div');
-      scene.className = 'scene';
-      var rig = document.createElement('div');
-      rig.className = 'rig';
-      rig.style.transform = 'rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
-
-      var scale = computeScale(CONFIG.items);
-      var gapPx = 20 * scale;
-      var totalWidthPx = CONFIG.items.reduce(function(s,it){ return s + it.width*scale; }, 0) + gapPx*(CONFIG.items.length-1);
-      var xCursor = -totalWidthPx/2;
-
-      CONFIG.items.forEach(function(it, idx){
-        var w = it.width*scale, d = it.length*scale, h = Math.max(it.height*scale, 6);
-        var group = document.createElement('div');
-        group.className = 'item-group' + (idx === CONFIG.selected ? ' is-selected' : '');
-        group.style.transform = 'translateX(' + (xCursor + w/2) + 'px) translateY(' + (h/2) + 'px)';
-        group.addEventListener('click', function(e){ e.stopPropagation(); selectItem(idx); });
-
-        if(CONFIG.type === 'table') renderTableItem(group, w, d, h, it);
-        else if(CONFIG.type === 'slab') renderSlabItem(group, w, d, h, it);
-        else renderBoxItem(group, w, d, h, it);
-
-        rig.appendChild(group);
-        xCursor += w + gapPx;
-      });
-
-      scene.appendChild(rig);
-      stage.appendChild(scene);
-      wireDrag(scene);
-
       var specLabel = document.getElementById('preview-spec-label');
-      if(CONFIG.items.length === 1){
-        var it0 = CONFIG.items[0];
-        specLabel.textContent = it0.width + ' × ' + it0.length + ' × ' + it0.height + ' CM';
+      var html = '';
+
+      if(CONFIG.type === 'wallart'){
+        CONFIG.pieces.forEach(function(p){
+          html += '<div class="summary-row"><span class="summary-swatch" style="background:' + RAL_HEX[p.color] + ';"></span>' +
+            '<span class="summary-row-label">Piece ' + p.id + '</span><span class="summary-row-value">' + RAL_NAME[p.color] + '</span></div>';
+        });
+        specLabel.textContent = CONFIG.pieces.length + ' pieces';
       } else {
-        specLabel.textContent = CONFIG.items.length + ' items';
+        CONFIG.items.forEach(function(it, idx){
+          var dims = (CONFIG.type === 'slab') ? (it.width + ' × ' + it.height + ' CM') : (it.width + ' × ' + it.length + ' × ' + it.height + ' CM');
+          html += '<div class="summary-row summary-row-heading' + (idx === CONFIG.selected ? ' is-selected' : '') + '" data-item-idx="' + idx + '">' +
+            '<span class="summary-row-label">' + itemLabel(idx) + '</span><span class="summary-row-value">' + dims + '</span></div>';
+          html += '<div class="summary-row"><span class="summary-swatch" style="background:' + RAL_HEX[it.frameColor] + ';"></span>' +
+            '<span class="summary-row-label">Frame</span><span class="summary-row-value">' + RAL_NAME[it.frameColor] + '</span></div>';
+          if(CONFIG.type === 'table'){
+            html += '<div class="summary-row"><span class="summary-swatch summary-swatch-material ' + it.topMaterial + '"></span>' +
+              '<span class="summary-row-label">Top</span><span class="summary-row-value">' + MATERIAL_NAME[it.topMaterial] + '</span></div>';
+          }
+        });
+        if(CONFIG.items.length === 1){
+          var it0 = CONFIG.items[0];
+          specLabel.textContent = it0.width + ' × ' + it0.length + ' × ' + it0.height + ' CM';
+        } else {
+          specLabel.textContent = CONFIG.items.length + ' items';
+        }
       }
+
+      stage.innerHTML = html;
+      stage.querySelectorAll('.summary-row-heading').forEach(function(row){
+        row.addEventListener('click', function(){ selectItem(parseInt(row.getAttribute('data-item-idx'), 10)); });
+      });
     }
 
-    function wireDrag(scene){
-      var dragging = false, lastX = 0, lastY = 0;
-      scene.addEventListener('pointerdown', function(e){
-        dragging = true; lastX = e.clientX; lastY = e.clientY;
-        scene.setPointerCapture(e.pointerId);
-      });
-      scene.addEventListener('pointermove', function(e){
-        if(!dragging) return;
-        var dx = e.clientX - lastX, dy = e.clientY - lastY;
-        lastX = e.clientX; lastY = e.clientY;
-        rotY += dx * 0.4;
-        rotX = Math.max(-60, Math.min(60, rotX - dy * 0.4));
-        var rig = scene.querySelector('.rig');
-        if(rig) rig.style.transform = 'rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
-      });
-      function endDrag(){ dragging = false; }
-      scene.addEventListener('pointerup', endDrag);
-      scene.addEventListener('pointercancel', endDrag);
-      scene.addEventListener('pointerleave', endDrag);
-    }
 
     function selectItem(idx){
       CONFIG.selected = idx;
       syncControlsToSelected();
-      renderPreview();
+      renderSummary();
       renderItemList();
     }
 
@@ -1633,7 +1413,7 @@
             e.stopPropagation();
             CONFIG.items.splice(idx, 1);
             if(CONFIG.selected >= CONFIG.items.length) CONFIG.selected = CONFIG.items.length - 1;
-            renderItemList(); syncControlsToSelected(); renderPreview();
+            renderItemList(); syncControlsToSelected(); renderSummary();
           });
           actions.appendChild(rm);
           li.appendChild(actions);
@@ -1700,7 +1480,7 @@
           s.addEventListener('click', function(){
             p.color = s.getAttribute('data-ral');
             renderWallArtControls();
-            renderPreview();
+            renderSummary();
           });
         });
         list.appendChild(row);
@@ -1730,7 +1510,7 @@
           pieces: [1,2,3,4,5,6].map(function(id){ return { id:id, color: id % 2 ? '9005' : 'gold' }; })
         };
         renderWallArtControls();
-        renderPreview();
+        renderSummary();
         return;
       }
 
@@ -1748,7 +1528,7 @@
       };
       renderItemList();
       syncControlsToSelected();
-      renderPreview();
+      renderSummary();
     }
 
     document.getElementById('add-item-btn').addEventListener('click', function(){
@@ -1760,7 +1540,7 @@
       }
       CONFIG.items.push(item);
       CONFIG.selected = CONFIG.items.length - 1;
-      renderItemList(); syncControlsToSelected(); renderPreview();
+      renderItemList(); syncControlsToSelected(); renderSummary();
     });
 
     document.querySelectorAll('.seat-btn').forEach(function(btn){
@@ -1770,7 +1550,7 @@
         var it = currentItem();
         it.width = preset.width; it.length = preset.length; it.height = preset.height;
         syncControlsToSelected();
-        renderPreview();
+        renderSummary();
       });
     });
 
@@ -1787,7 +1567,7 @@
           var matches = preset && it.width === preset.width && it.length === preset.length && it.height === preset.height;
           b.classList.toggle('is-selected', !!matches);
         });
-        renderPreview();
+        renderSummary();
       });
     });
 
@@ -1796,7 +1576,7 @@
       if(!s || !CONFIG || CONFIG.type === 'wallart') return;
       currentItem().frameColor = s.getAttribute('data-ral');
       syncControlsToSelected();
-      renderPreview();
+      renderSummary();
     });
 
     document.getElementById('top-material-swatches').addEventListener('click', function(e){
@@ -1804,7 +1584,7 @@
       if(!s || !CONFIG || CONFIG.type !== 'table') return;
       currentItem().topMaterial = s.getAttribute('data-material');
       syncControlsToSelected();
-      renderPreview();
+      renderSummary();
     });
 
     function buildQuoteSummary(){

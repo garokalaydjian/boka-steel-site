@@ -426,11 +426,14 @@
   #quote-summary:empty::before{ content:"Your selections will be summarized here automatically."; }
   .quote-form-row{ display:flex; flex-direction:column; gap:6px; }
   .quote-form-row label{ font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
-  .quote-form-row input{
+  .quote-form-row input, .quote-form-row textarea{
     background:var(--ground); border:var(--edge); border-radius:2px; padding:12px 14px; color:var(--ink);
-    font-family:var(--font-body); font-size:.92rem;
+    font-family:var(--font-body); font-size:.92rem; resize:vertical;
   }
-  .quote-form-row input:focus{ outline:none; border-color:var(--brass); }
+  .quote-form-row input:focus, .quote-form-row textarea:focus{ outline:none; border-color:var(--brass); }
+  .quote-form-row input.has-error{ border-color:#c1121c; }
+  .field-error{ display:none; font-family:var(--font-mono); font-size:.72rem; color:#c1121c; }
+  .field-error.is-visible{ display:block; }
   .quote-actions{ display:flex; flex-direction:column; gap:10px; }
   #quote-whatsapp-btn{ background:#25D366; border-color:#25D366; color:#ffffff; }
   #quote-whatsapp-btn:hover{ background:#1fb959; border-color:#1fb959; }
@@ -1041,10 +1044,16 @@
         <div class="quote-form-row">
           <label for="quote-name">Full Name</label>
           <input type="text" id="quote-name" name="quote-name" placeholder="Your name" autocomplete="name">
+          <span class="field-error" id="quote-name-error"></span>
         </div>
         <div class="quote-form-row">
           <label for="quote-phone">Phone / WhatsApp Number</label>
           <input type="tel" id="quote-phone" name="quote-phone" placeholder="+961 ..." autocomplete="tel">
+          <span class="field-error" id="quote-phone-error"></span>
+        </div>
+        <div class="quote-form-row">
+          <label for="quote-notes">Notes <span style="text-transform:none;">(optional)</span></label>
+          <textarea id="quote-notes" name="quote-notes" rows="3" placeholder="Anything else we should know?"></textarea>
         </div>
         <div class="quote-actions">
           <a href="https://wa.me/96179364052" target="_blank" rel="noopener" class="btn btn-block" id="quote-whatsapp-btn" data-whatsapp-base="https://wa.me/96179364052">Send via WhatsApp</a>
@@ -1619,10 +1628,69 @@
     var quoteWhatsappBtn = document.getElementById('quote-whatsapp-btn');
     var quoteBase = quoteWhatsappBtn.getAttribute('data-whatsapp-base');
 
+    var quoteNameInput = document.getElementById('quote-name');
+    var quotePhoneInput = document.getElementById('quote-phone');
+    var quoteNotesInput = document.getElementById('quote-notes');
+    var quoteNameError = document.getElementById('quote-name-error');
+    var quotePhoneError = document.getElementById('quote-phone-error');
+
+    function buildWhatsAppMessage(){
+      var summary = buildQuoteSummary();
+      if(!summary.text) return 'Hi BOKA Steel, I\'d like a quotation.';
+      var name = quoteNameInput.value.trim();
+      var notes = quoteNotesInput.value.trim();
+      var cat = CONFIG && CATALOGUE[CONFIG.category];
+      var sub = cat && cat.subs[CONFIG.subcategory];
+      var context = sub ? sub.name : (cat ? cat.name : '');
+      var lines = [];
+      lines.push('Hi BOKA Steel, I\'d like a quotation' + (name ? ' — this is ' + name : '') + '.');
+      lines.push('');
+      if(context) lines.push(context + ':');
+      lines.push(summary.text);
+      if(notes){ lines.push(''); lines.push('Notes: ' + notes); }
+      return lines.join('\n');
+    }
+
+    function setFieldError(input, errorEl, message){
+      input.classList.toggle('has-error', !!message);
+      errorEl.textContent = message || '';
+      errorEl.classList.toggle('is-visible', !!message);
+    }
+
+    function clearValidation(){
+      setFieldError(quoteNameInput, quoteNameError, '');
+      setFieldError(quotePhoneInput, quotePhoneError, '');
+    }
+
+    function validateQuoteForm(){
+      var ok = true;
+      var name = quoteNameInput.value.trim();
+      var phone = quotePhoneInput.value.trim();
+      if(!name){ setFieldError(quoteNameInput, quoteNameError, 'Enter your name so we know who to reach.'); ok = false; }
+      else { setFieldError(quoteNameInput, quoteNameError, ''); }
+      var digitCount = (phone.match(/\d/g) || []).length;
+      if(!phone || digitCount < 7){ setFieldError(quotePhoneInput, quotePhoneError, 'Enter a valid phone number.'); ok = false; }
+      else { setFieldError(quotePhoneInput, quotePhoneError, ''); }
+      return ok;
+    }
+
+    quoteNameInput.addEventListener('input', function(){ if(this.classList.contains('has-error')) setFieldError(quoteNameInput, quoteNameError, ''); });
+    quotePhoneInput.addEventListener('input', function(){ if(this.classList.contains('has-error')) setFieldError(quotePhoneInput, quotePhoneError, ''); });
+
+    quoteWhatsappBtn.addEventListener('click', function(e){
+      if(!validateQuoteForm()){
+        e.preventDefault();
+        return;
+      }
+      quoteWhatsappBtn.href = quoteBase + '?text=' + encodeURIComponent(buildWhatsAppMessage());
+    });
+
     function openModal(){
       var summary = buildQuoteSummary();
       document.getElementById('quote-summary').innerHTML = summary.html || '<div class="summary-line">Browse the catalogue and configure an item to build a summary here.</div>';
-      quoteWhatsappBtn.href = quoteBase + '?text=' + encodeURIComponent(summary.text || 'Hi BOKA Steel, I\'d like a quotation.');
+      quoteWhatsappBtn.href = quoteBase + '?text=' + encodeURIComponent(buildWhatsAppMessage());
+      quoteNameInput.value = ''; quotePhoneInput.value = ''; quoteNotesInput.value = '';
+      clearValidation();
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
     }

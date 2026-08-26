@@ -19,10 +19,10 @@
       "explanation": "An electrostatically applied, oven-cured finish that bonds to steel, stainless, and aluminum alike. Denser, harder, and longer-lasting than paint — one process, any metal, a flawless result.",
       "turnaround": "Confirmed with your quotation, based on volume and color.",
       "process": {
-        "step1": "Surface prepared for full adhesion",
-        "step2": "Powder charged for even, edge-to-edge coverage",
-        "step3": "Cured until it flows into one seamless shell",
-        "step4": "Inspected to a flawless standard"
+        "step1": "Degreased and blasted back to bare metal",
+        "step2": "Powder applied electrostatically for full, even coverage",
+        "step3": "Cured in the oven until it flows into one seamless shell",
+        "step4": "Cooled and inspected under light before it leaves the shop"
       },
       "cta": "Request a Quotation"
     },
@@ -34,10 +34,10 @@
       "methods": "TIG, MIG, and structural welding, matched to the metal and the job.",
       "turnaround": "Confirmed with your quotation, based on complexity.",
       "process": {
-        "step1": "Pieces cut and fitted with precision",
-        "step2": "Tack-welded and aligned true",
-        "step3": "Fully welded for structural strength",
-        "step4": "Ground and finished seamless"
+        "step1": "Pieces measured, marked, and cut to the drawing",
+        "step2": "Clamped, aligned true, and tack-welded in place",
+        "step3": "Fully welded for real structural strength, not just a tack",
+        "step4": "Ground flush and finished for one clean, seamless line"
       },
       "cta": "Request a Quotation"
     },
@@ -49,10 +49,10 @@
       "precision": "Tight, repeatable tolerances, cut after cut.",
       "turnaround": "Confirmed with your quotation, based on complexity and thickness.",
       "process": {
-        "step1": "Design translated into a precise cut file",
-        "step2": "Metal cut with millimeter accuracy",
-        "step3": "Edges deburred to a clean finish",
-        "step4": "Every piece verified true to spec"
+        "step1": "Design programmed into an exact cut file",
+        "step2": "Sheet loaded and cut to the drawing, to the millimeter",
+        "step3": "Edges deburred smooth to the touch",
+        "step4": "Every piece checked against the original design before handoff"
       },
       "cta": "Request a Quotation"
     },
@@ -63,10 +63,10 @@
       "explanation": "High-pressure abrasive cleaning that strips steel, stainless, or aluminum back to bare surface — the essential first step for a finish that actually lasts.",
       "turnaround": "Confirmed with your quotation, based on surface area.",
       "process": {
-        "step1": "Surface assessed and prepped",
-        "step2": "Blasted clean to bare metal",
-        "step3": "Cleared of all residue",
-        "step4": "Ready immediately for coating or finishing"
+        "step1": "Surface inspected for rust, scale, and old coating",
+        "step2": "Blasted with abrasive media to bright bare metal",
+        "step3": "Cleared of dust and residue completely",
+        "step4": "Handed straight to coating or finishing while the surface is clean"
       },
       "cta": "Request a Quotation"
     }

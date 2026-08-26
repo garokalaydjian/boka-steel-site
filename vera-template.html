@@ -245,7 +245,20 @@
      SERVICE DETAIL template (reused for all 4 services)
      ============================================================ */
   .service-detail-hero{ position:relative; height:52vh; min-height:360px; overflow:hidden; border-bottom:var(--edge-brass); }
-  .service-detail-hero img, .service-detail-hero .photo-pending, .service-detail-hero .hero-video{ width:100%; height:100%; object-fit:cover; filter:saturate(.97) brightness(.86); }
+  .service-detail-hero img, .service-detail-hero .photo-pending{ width:100%; height:100%; object-fit:cover; filter:saturate(.97) brightness(.86); }
+
+  /* Hero videos are shot portrait (phone footage) — object-fit:cover would crop most of
+     the frame away on a wide desktop banner while barely cropping on a narrow phone screen,
+     which is why it looked like two different videos per device. Fix: always show the full
+     frame (object-fit:contain, never crop) and give each breakpoint a container shaped to
+     suit it, instead of forcing one wide banner shape on a portrait clip everywhere. */
+  .service-detail-hero.has-video{ height:auto; min-height:0; background:var(--ink); }
+  .service-detail-hero .hero-video{
+    display:block; width:100%; height:82vh; max-height:760px; object-fit:contain; background:var(--ink);
+  }
+  @media (min-width:900px){
+    .service-detail-hero .hero-video{ width:min(46vh, 480px); height:82vh; margin:0 auto; }
+  }
   .service-detail-hero .hero-caption{
     position:absolute; left:0; right:0; bottom:0; padding:40px 32px;
     background:linear-gradient(0deg, rgba(33,29,21,.9) 0%, transparent 100%);
@@ -565,7 +578,7 @@
          SERVICE DETAIL — Powder Coating
          ============================================================ -->
     <section id="screen-service-powder-coating" class="screen service-detail">
-      <div class="service-detail-hero">
+      <div class="service-detail-hero has-video">
         <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="data:image/jpeg;base64,{{VIDEO_POWDERCOATING_POSTER}}" aria-label="Powder coating a steel piece — spray gun applying charged powder in the finishing booth">
           <source src="assets/videos/powdercoating.mp4" type="video/mp4">
         </video>
@@ -587,7 +600,7 @@
             <dl>
               <dt>Finish</dt><dd>Matte / satin / gloss</dd>
               <dt>Palette</dt><dd>Full RAL range</dd>
-              <dt>Applies to</dt><dd>Frames, gates, furniture</dd>
+              <dt>Works On</dt><dd>Steel, stainless, aluminum</dd>
               <dt>Turnaround</dt><dd data-copy="services.powdercoating.turnaround"></dd>
             </dl>
           </aside>
@@ -639,7 +652,7 @@
          SERVICE DETAIL — Welding
          ============================================================ -->
     <section id="screen-service-welding" class="screen service-detail">
-      <div class="service-detail-hero">
+      <div class="service-detail-hero has-video">
         <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="data:image/jpeg;base64,{{VIDEO_WELDING_POSTER}}" aria-label="A BOKA Steel welder at work, sparks flying, mid-weld on a steel piece">
           <source src="assets/videos/welding.mp4" type="video/mp4">
         </video>
@@ -661,7 +674,6 @@
             <dl>
               <dt>Methods</dt><dd data-copy="services.welding.methods"></dd>
               <dt>Materials</dt><dd>Mild &amp; stainless steel</dd>
-              <dt>Applies to</dt><dd>Gates, frames, structures</dd>
               <dt>Turnaround</dt><dd data-copy="services.welding.turnaround"></dd>
             </dl>
           </aside>
@@ -707,7 +719,7 @@
          SERVICE DETAIL — Laser Cutting
          ============================================================ -->
     <section id="screen-service-laser-cutting" class="screen service-detail">
-      <div class="service-detail-hero">
+      <div class="service-detail-hero has-video">
         <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="data:image/jpeg;base64,{{VIDEO_LASERCUTTING_POSTER}}" aria-label="A CNC fiber laser cutting head slicing through a steel plate">
           <source src="assets/videos/lasercutting.mp4" type="video/mp4">
         </video>
@@ -729,7 +741,7 @@
             <dl>
               <dt>Precision</dt><dd data-copy="services.lasercutting.precision"></dd>
               <dt>Patterns</dt><dd>Custom, Greek-key, brand motifs</dd>
-              <dt>Applies to</dt><dd>Gates, doors, wall art, signage</dd>
+              <dt>Works On</dt><dd>Steel, stainless, aluminum</dd>
               <dt>Turnaround</dt><dd data-copy="services.lasercutting.turnaround"></dd>
             </dl>
           </aside>
@@ -795,7 +807,7 @@
             <dl>
               <dt>Purpose</dt><dd>Rust &amp; coating removal, surface prep</dd>
               <dt>Feeds Into</dt><dd>Powder coating, welding repair</dd>
-              <dt>Applies to</dt><dd>Any raw or reclaimed steel piece</dd>
+              <dt>Works On</dt><dd>Any raw or reclaimed steel piece</dd>
               <dt>Turnaround</dt><dd data-copy="services.sandblasting.turnaround"></dd>
             </dl>
           </aside>

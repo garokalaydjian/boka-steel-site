@@ -62,6 +62,7 @@ my %imgmap = (
   IMG_WALLART_CLOCK         => "assets\\wallart_colorblock_clock.b64",
   IMG_WALLART_RIBBON_BLACK  => "assets\\wallart_ribbon_black.b64",
   IMG_WALLART_RIBBON_BRONZE => "assets\\wallart_ribbon_bronze.b64",
+  IMG_DESIGN_DINING_XBASE   => "assets\\designs\\dining_marble_xbase.b64",
 );
 for my $token (keys %imgmap) {
   my $b64 = slurp_raw("$dir\\$imgmap{$token}");

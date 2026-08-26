@@ -367,6 +367,12 @@
   .piece-row .piece-name{ font-family:var(--font-mono); font-size:.76rem; color:var(--muted); }
   .piece-row .swatch{ width:26px; height:26px; }
 
+  .seats-row{ display:flex; gap:10px; }
+  .seat-btn{ flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; padding:12px 8px; border:var(--edge); border-radius:6px; background:var(--surface); font-family:var(--font-mono); font-size:.82rem; color:var(--ink); transition:border-color .15s ease, background .15s ease; }
+  .seat-btn span{ font-size:.68rem; color:var(--muted); letter-spacing:.02em; }
+  .seat-btn:hover{ border-color:var(--brass); }
+  .seat-btn.is-selected{ border-color:var(--brass); background:color-mix(in srgb, var(--brass) 10%, var(--surface)); }
+
   .ral-section{ padding:56px 32px; }
   .ral-group{ margin-top:28px; }
   .ral-group h4{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--brass); margin:0 0 14px; }
@@ -918,6 +924,15 @@
               <div class="current-item-label" id="current-item-label">Table 1</div>
             </div>
 
+            <div class="control-group" id="seats-group" style="display:none;">
+              <h4>Seats</h4>
+              <div class="seats-row">
+                <button class="seat-btn" id="seats-6" data-seats="6">6 People<span>180 × 90 CM</span></button>
+                <button class="seat-btn" id="seats-8" data-seats="8">8 People<span>220 × 100 CM</span></button>
+              </div>
+              <p class="palette-note">Picks the standard size — edit it freely below.</p>
+            </div>
+
             <div class="control-group" id="dimensions-group">
               <h4>Dimensions</h4>
               <div class="dim-row">
@@ -1068,7 +1083,7 @@
       tables: { name:'Tables', blurb:'Dining, coffee, console, and side tables — built to your space.',
         subs: {
           'dining-tables': { name:'Dining Tables', blurb:'Everyday tables, sized to your exact seat count.',
-            designs:[ {name:'X-Base', blurb:'Our signature crossed-leg base — steel frame, any top material.'}, {name:'Pedestal', blurb:'A single central column, clean lines from every angle.'}, {name:'Trestle', blurb:'Two end supports joined by a low crossbar, built for long tables.'} ] },
+            designs:[ {name:'X-Base', blurb:'Our signature crossed-leg base — steel frame, any top material.', img:'{{IMG_DESIGN_DINING_XBASE}}'}, {name:'Pedestal', blurb:'A single central column, clean lines from every angle.'}, {name:'Trestle', blurb:'Two end supports joined by a low crossbar, built for long tables.'} ] },
           'coffee-tables': { name:'Coffee Tables', blurb:'Living room centerpieces, sized to your seating.',
             designs:[ {name:'X-Base', blurb:'The same crossed-leg base as our dining tables, coffee height.'}, {name:'Nesting Set', blurb:'Two or three tables that tuck under one another.'}, {name:'Round', blurb:'A single steel pedestal beneath a round top.'} ] },
           'console-tables': { name:'Console Tables', blurb:'Slim profiles for entryways and hallways.',
@@ -1561,6 +1576,13 @@
       }
       var lengthField = document.getElementById('dim-length').closest('.dim-field');
       lengthField.style.display = (CONFIG.type === 'slab') ? 'none' : '';
+
+      document.querySelectorAll('.seat-btn').forEach(function(b){
+        var seats = b.getAttribute('data-seats');
+        var preset = SEAT_PRESETS[seats];
+        var matches = preset && it.width === preset.width && it.length === preset.length && it.height === preset.height;
+        b.classList.toggle('is-selected', !!matches);
+      });
     }
 
     function itemLabel(idx){ return CONFIG.designName + ' ' + (idx+1); }
@@ -1596,6 +1618,11 @@
         list.appendChild(li);
       });
     }
+
+    var SEAT_PRESETS = {
+      '6': { width:180, length:90, height:75 },
+      '8': { width:220, length:100, height:75 }
+    };
 
     function defaultDims(type){
       if(type === 'table') return { width:120, length:70, height:74 };
@@ -1671,6 +1698,9 @@
       document.getElementById('frame-color-group').style.display = isWallArt ? 'none' : '';
       document.querySelector('.configurator-layout').classList.toggle('wallart-mode', isWallArt);
 
+      var isDiningTable = catSlug === 'tables' && subSlug === 'dining-tables';
+      document.getElementById('seats-group').style.display = isDiningTable ? '' : 'none';
+
       if(isWallArt){
         CONFIG = {
           type:'wallart', category:catSlug, subcategory:subSlug, designName: title,
@@ -1682,10 +1712,15 @@
       }
 
       var itemType = CONFIG_TYPE[catSlug] || 'box';
+      var firstItem = newItem(itemType);
+      if(isDiningTable){
+        var preset = SEAT_PRESETS['6'];
+        firstItem.width = preset.width; firstItem.length = preset.length; firstItem.height = preset.height;
+      }
       CONFIG = {
         type: itemType,
         category: catSlug, subcategory: subSlug, designName: title,
-        items: [ newItem(itemType) ],
+        items: [ firstItem ],
         selected: 0
       };
       renderItemList();
@@ -1695,9 +1730,25 @@
 
     document.getElementById('add-item-btn').addEventListener('click', function(){
       if(!CONFIG || CONFIG.type === 'wallart') return;
-      CONFIG.items.push(newItem(CONFIG.type));
+      var item = newItem(CONFIG.type);
+      if(CONFIG.category === 'tables' && CONFIG.subcategory === 'dining-tables'){
+        var preset = SEAT_PRESETS['6'];
+        item.width = preset.width; item.length = preset.length; item.height = preset.height;
+      }
+      CONFIG.items.push(item);
       CONFIG.selected = CONFIG.items.length - 1;
       renderItemList(); syncControlsToSelected(); renderPreview();
+    });
+
+    document.querySelectorAll('.seat-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(!CONFIG || CONFIG.type === 'wallart') return;
+        var preset = SEAT_PRESETS[btn.getAttribute('data-seats')];
+        var it = currentItem();
+        it.width = preset.width; it.length = preset.length; it.height = preset.height;
+        syncControlsToSelected();
+        renderPreview();
+      });
     });
 
     ['dim-width','dim-length','dim-height'].forEach(function(id){
@@ -1708,6 +1759,11 @@
         if(id === 'dim-width') it.width = val;
         if(id === 'dim-length') it.length = val;
         if(id === 'dim-height') it.height = val;
+        document.querySelectorAll('.seat-btn').forEach(function(b){
+          var preset = SEAT_PRESETS[b.getAttribute('data-seats')];
+          var matches = preset && it.width === preset.width && it.length === preset.length && it.height === preset.height;
+          b.classList.toggle('is-selected', !!matches);
+        });
         renderPreview();
       });
     });
